@@ -1,3 +1,5 @@
+from django.forms.models import BaseModelForm
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView, DeleteView, CreateView
@@ -32,6 +34,8 @@ class ArticleCreateView(CreateView):
     template_name = 'article_create.html'
     fields = (
         'title',
-        'body',
-        'author',
-    )
+        'body' )
+    
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
